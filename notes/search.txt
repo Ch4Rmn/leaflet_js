@@ -1,0 +1,6 @@
+| #      | Plugin Name                      | Description                                           |
+
+| 5️⃣    | **Leaflet.geocoder**             | Search box ထဲမှာနေရာရှာနိုင်                          |
+
+
+

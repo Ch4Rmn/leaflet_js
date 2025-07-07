@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Geocoding with Marker Cluster</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- MarkerCluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <style>
+        #map { height: 400px; width: 100%; }
+        .input-group { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Add by Address or Coordinates</h2>
+    <div class="input-group">
+        <input type="text" id="address" placeholder="e.g., Yangon, Myanmar">
+        <button onclick="getCoordinates()">Add by Address</button>
+    </div>
+    <div class="input-group">
+        <input type="number" id="lat" placeholder="Latitude (e.g., 16.795)" step="any">
+        <input type="number" id="lng" placeholder="Longitude (e.g., 96.16)" step="any">
+        <button onclick="addByLatLng()">Add by Lat/Lng</button>
+    </div>
+    <button onclick="clearMarkers()">Delete All Markers</button>
+    <p id="result"></p>
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- MarkerCluster JS -->
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script>
+
+// Initialize the map
+let map = L.map('map').setView([16.795, 96.16], 5); // Default view (Yangon, Myanmar)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// Create a marker cluster group
+let markers = L.markerClusterGroup();
+map.addLayer(markers);
+
+// Function to add marker by address (using Nominatim)
+function getCoordinates() {
+    let address = document.getElementById("address").value;
+    let result = document.getElementById("result");
+
+    if (!address) {
+        result.innerHTML = "Please enter an address.";
+        return;
+    }
+
+    let url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.length > 0) {
+                let lat = data[0].lat;
+                let lng = data[0].lon;
+                result.innerHTML = `Latitude: ${lat}, Longitude: ${lng}`;
+
+                // Add marker
+                let marker = L.marker([lat, lng]).bindPopup(address);
+                markers.addLayer(marker);
+                map.setView([lat, lng], 10);
+            } else {
+                result.innerHTML = "Location not found. Try another address.";
+            }
+        })
+        .catch(error => {
+            result.innerHTML = "Error: Couldn’t connect to the API.";
+            console.error(error);
+        });
+}
+
+// Function to add marker by latitude and longitude
+function addByLatLng() {
+    let lat = parseFloat(document.getElementById("lat").value);
+    let lng = parseFloat(document.getElementById("lng").value);
+    let result = document.getElementById("result");
+
+    if (isNaN(lat) || isNaN(lng)) {
+        result.innerHTML = "Please enter valid latitude and longitude.";
+        return;
+    }
+
+    // Add marker
+    let marker = L.marker([lat, lng]).bindPopup(`Lat: ${lat}, Lng: ${lng}`);
+    markers.addLayer(marker);
+    map.setView([lat, lng], 10);
+    result.innerHTML = `Added: Latitude: ${lat}, Longitude: ${lng}`;
+}
+
+// Function to delete all markers
+function clearMarkers() {
+    markers.clearLayers();
+    document.getElementById("result").innerHTML = "All markers deleted.";
+}
+
+    </script>
+</body>
+</html>

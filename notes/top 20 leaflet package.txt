@@ -1,0 +1,23 @@
+| #      | Plugin Name                      | Description                                           |
+| ------ | -------------------------------- | ----------------------------------------------------- |
+| 1️⃣    | **Leaflet.markercluster**        | Marker အများကြီးကို cluster group အနေနဲ့ပြ            |
+| 2️⃣    | **Leaflet.draw**                 | Map ပေါ်မှာ marker, line, polygon တို့ကို ရေးဆွဲနိုင် |
+| 3️⃣    | **Leaflet.fullscreen**           | Map ကို fullscreen ဖွင့်နိုင်                         |
+| 4️⃣    | **Leaflet.locatecontrol**        | Current location ကိုပြ                                |
+| 5️⃣    | **Leaflet.geocoder**             | Search box ထဲမှာနေရာရှာနိုင်                          |
+| 6️⃣    | **Leaflet.zoomhome**             | Zoom Reset / Home Button                              |
+| 7️⃣    | **Leaflet-minimap**              | မြေပုံထဲမှာ မြေပုံပေါ် (mini map)                     |
+| 8️⃣    | **Leaflet.pm**                   | GeoJSON editing & draw tool (powerful!)               |
+| 9️⃣    | **Leaflet.extra-markers**        | Bootstrap-like colorful marker icon pack              |
+| 🔟     | **Leaflet.heat**                 | Heatmap (data density) ဖော်ပြနိုင်                    |
+| 1️⃣1️⃣ | **Leaflet.label / Tooltip**      | Marker hover label တွေဖော်ပြ                          |
+| 1️⃣2️⃣ | **Leaflet.browser.print**        | Map ကို PDF / Print နဲ့ save လုပ်                     |
+| 1️⃣3️⃣ | **Leaflet.timeline**             | Time-based GeoJSON data တွေကို animate လုပ်           |
+| 1️⃣4️⃣ | **Leaflet.Sync**                 | မြေပုံနှစ်ခုကို sync pan/zoom ဖြစ်အောင်               |
+| 1️⃣5️⃣ | **Leaflet.MeasureControl**       | Map ပေါ်မှာ အကွာအဝေးတိုင်းတာ                          |
+| 1️⃣6️⃣ | **Leaflet.PolylineDecorator**    | Arrow, pattern, animation on LineString               |
+| 1️⃣7️⃣ | **Leaflet.ImageOverlay.Rotated** | Rotated images overlay on map                         |
+| 1️⃣8️⃣ | **Leaflet.DriftMarker**          | Moving markers (vehicle tracking)                     |
+| 1️⃣9️⃣ | **Leaflet.GestureHandling**      | Mobile touch gesture support                          |
+| 2️⃣0️⃣ | **Leaflet.Control.Layers.Tree**  | Layer selector ကို tree UI နဲ့ပြ                      |
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Leaflet GeoJSON Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+      #map {
+        height: 600px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+ <!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  // Initialize the map
+  const map = L.map('map').setView([16.8, 96.15], 6); // You can change center & zoom
+
+  // Add OpenStreetMap Tile Layer
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+  }).addTo(map);
+
+  // Load GeoJSON file
+  fetch('YGN_TS_Bdry_Updated_2025.geojson')
+    .then(response => response.json())
+    .then(geojsonData => {
+      L.geoJSON(geojsonData).addTo(map);
+    })
+    .catch(error => console.error('Error loading GeoJSON:', error));
+</script>
+</body>
+</html>
+
