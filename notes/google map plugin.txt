@@ -1,0 +1,23 @@
+<!-- Google Mutant Plugin -->
+<!-- <script src="https://unpkg.com/leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant.js"></script> -->
+
+<!-- Google Maps JS API -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key="></script> -->
+
+AIzaSyC5Zf6771LEOZccmHdKcXPtLiNdPuNrHVU
+
+
+
+
+
+  // google map 
+// const googleLayers = {
+//   "Google Road (Mutant)": googleRoad,
+//   "Google Satellite (Mutant)": googleSat,
+//   "Google Terrain (Mutant)": googleTerrain,
+//   "Google Hybrid (Mutant)": googleHybrid
+// };
+
+// ✅ Combine into control
+// L.control.layers({ ...basemaps, ...googleLayers }).addTo(map);
+  // google map 

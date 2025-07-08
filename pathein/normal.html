@@ -16,8 +16,7 @@
   rel="stylesheet"
   href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css"
 /> -->
-<!-- Leaflet.markercluster JS -->
-<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
 
 <!--  Mini Map-->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
@@ -40,6 +39,9 @@
 
 <!-- leaflet.pm -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" />
+
+<!-- Leaflet.markercluster JS -->
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 
 
 
@@ -77,6 +79,12 @@
 
 <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
 
+<!--  -->
+<!-- Google Mutant Plugin -->
+<!-- <script src="https://unpkg.com/leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant.js"></script> -->
+
+<!-- Google Maps JS API -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key="></script> -->
 
 
 
@@ -84,8 +92,11 @@
 <script>
   // Initialize map
   const map = L.map('map', {
-    center: [16.8, 96.15],
-    zoom: 13
+    center: [16.87464905, 94.60865],
+    // Lat: 17.04093, Lng: 94.60865
+    // 94.9620285, "Latitude": 16.87464905  
+    // 16.7754° N, 94.7381° E
+    zoom: 11
   });
 
   const basemaps = {
@@ -138,11 +149,27 @@
       maxZoom: 20,
       subdomains: ['mt0','mt1','mt2','mt3'],
       attribution: '© Google'
-    })
+    }),
+    //    "GoogleRoad" : L.gridLayer.googleMutant({ type: 'roadmap' }),
+    //   "GoogleSat" : L.gridLayer.googleMutant({ type: 'satellite' }),
+    // "GoogleTerrain" : L.gridLayer.googleMutant({ type: 'terrain' }),
+    //   "GoogleHybrid" : L.gridLayer.googleMutant({ type: 'hybrid' });
   };
 
   // Default base layer
   basemaps["OpenStreetMap"].addTo(map);
+
+  // google map 
+// const googleLayers = {
+//   "Google Road (Mutant)": googleRoad,
+//   "Google Satellite (Mutant)": googleSat,
+//   "Google Terrain (Mutant)": googleTerrain,
+//   "Google Hybrid (Mutant)": googleHybrid
+// };
+
+// ✅ Combine into control
+// L.control.layers({ ...basemaps, ...googleLayers }).addTo(map);
+  // google map 
 
   // Layer control
   L.control.layers(basemaps).addTo(map);
@@ -153,9 +180,11 @@
 
   L.Control.geocoder({ position: 'topright' }).addTo(map);
 
-  L.control.toposcale({
+  L.control.toposcale({ 
     scale_text:'Dpsmap Scale'
   }).addTo(map);
+
+  
 
   
 
@@ -196,8 +225,30 @@ L.control.polylineMeasure({
 // map.addControl(new L.Control.Fullscreen());
 
   // Add Marker
-  const marker = L.marker([16.8, 96.15],{ pmIgnore: true }).addTo(map)
-    .bindPopup("<b>ရန်ကုန်</b><br>မြန်မာ").openPopup();
+  // const marker = L.marker([16.8, 96.15],
+  
+  // { pmIgnore: true,draggable: true }).addTo(map)
+  //   .bindPopup("<b>ရန်ကုန်</b><br>မြန်မာ").openPopup();
+
+//   const marker = L.marker([16.8, 96.15], { pmIgnore: true, draggable: true })
+//   .addTo(map)
+//   .bindPopup("<b>ရန်ကုန်</b><br>မြန်မာ")
+//   .openPopup();
+// marker.on('drag', function(e) {
+//   var lat = e.target.getLatLng().lat;
+//   var lng = e.target.getLatLng().lng;
+//   marker.setPopupContent(`<b>ရန်ကုန်</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`);
+// });
+
+    // 
+// marker.on('drag', function(e) {
+//   // Get the current latitude and longitude of the marker
+//   var lat = e.target.getLatLng().lat;
+//   var lng = e.target.getLatLng().lng;
+//   // Update the coordinates display
+//   document.getElementById('coords').innerHTML = `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`;
+// });
+
 
     map.pm.addControls({
   position: 'topleft', // button bar ကို ဘယ်ဘက်ထိပ်မှာထားမယ်
@@ -214,7 +265,7 @@ L.control.polylineMeasure({
 });
 
 // user location 
-map.locate({setView: true, maxZoom: 16});
+// map.locate({setView: true, maxZoom: 16});
 
 // if found user location
 // function onLocationFound(e) {
@@ -250,7 +301,7 @@ function onLocationError(e) {
 map.on('locationerror', onLocationError);
 
 // fetch GeoJSON data and add to map
-  fetch("YGN_TS_Bdry_Updated_2025.geojson")
+  fetch("Villages_Pathein_DT.geojson")
   .then(res => res.json())
   .then(data => {
     L.geoJSON(data, {
@@ -316,6 +367,8 @@ map.on('locationerror', onLocationError);
     }).addTo(map);
   })
   .catch(error => console.error("GeoJSON Load Failed:", error));
+
+  // map.setView([baseGeoJson.geometry.coordinates[1], baseGeoJson.geometry.coordinates[0]], 13);
 
 
     // 
