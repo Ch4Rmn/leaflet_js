@@ -11,7 +11,6 @@
   <!-- Leaflet.markercluster CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
-
   <!-- Mini Map-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
   <!-- Control.FullScreen -->
@@ -24,11 +23,21 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/KomelT/Leaflet.TopoScale/dist/leaflet.toposcale.min.css"/>
   <!-- leaflet.pm -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" />
-<!-- Leaflet.GestureHandling -->
-  <link rel="stylesheet" href="css/leaflet-gesture-handling.min.css" type="text/css">
+  <!-- leaflet-legend -->
+   <link rel="stylesheet" href="src/leaflet.legend.css">
+<!-- leaflet-search -->
+   <link rel="stylesheet" href="src/leaflet-search.css">
+<!-- leaflet-locatecontrol -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.css" />
 
+  <!-- <link href="https://cdn.jsdelivr.net/npm/leaflet-legend@1.0.2/leaflet-legend.min.css" rel="stylesheet"> -->
+<!-- <link rel="stylesheet" href="https://unpkg.com/leaflet-search@3.0.8/dist/leaflet-search.src.css" /> -->
 
-  <style>
+<style>
+    body{
+      margin: 0;
+      padding: 0;
+    }
     #map { height: 100vh; }
   </style>
 </head>
@@ -45,26 +54,31 @@
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-<link rel="stylesheet" href="//unpkg.com/leaflet-gesture-handling/dist/leaflet-gesture-handling.min.css" type="text/css">
+<!-- <script src="https://unpkg.com/leaflet-search@3.0.8/dist/leaflet-search.min.js"></script> -->
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/leaflet-legend@1.0.2/leaflet-legend.min.js"></script> -->
+<script src="src/leaflet.legend.js"></script>
+<script src="src/leaflet-search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+
 
 <script>
   // Initialize map
   const map = L.map('map', {
+    // searchControl: {layer: searchLayer}
     center: [16.87464905, 94.60865],
     gestureHandling: true,
     zoomControl: true,
-    // fullscreenControl: true,
-    // browserPrintControl: true,
-    // geocoderControl: true,
-    // toposcaleControl: true,
-    // polylineMeasureControl: true,
-    // pmControl: true,
-    // zoom: 11
+    zoom: 11,
+    //  searchControl: {layer: searchLayer} 
   });
 
   const basemaps = {
     "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
+    }),
+    "Esri Streets": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '© Esri'
     }),
     "Esri Satellite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: '© Esri, Maxar'
@@ -75,24 +89,32 @@
     "Carto Dark": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution: '© CartoDB'
     }),
-    "Stamen Toner": L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
-      attribution: '© Stamen'
+    "Google Streets": L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
     }),
-    "Stamen Terrain": L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {
-      attribution: '© Stamen'
+    "Google Hybrid": L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
     }),
-    "Stamen Watercolor": L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg', {
-      attribution: '© Stamen'
+    "Google Satellite": L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
     }),
-    "Esri Streets": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-      attribution: '© Esri'
+    "Google Terrain": L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
     }),
     "OpenTopoMap": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenTopoMap'
     }),
     "Hike & Bike": L.tileLayer('https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap, CC-BY-SA'
-    })
+    }),
   };
 
   // Default base layer
@@ -102,8 +124,13 @@
   L.control.layers(basemaps).addTo(map);
   L.control.fullscreen({ position: 'topleft' }).addTo(map);
   L.control.browserPrint({ position: 'topright' }).addTo(map);
-  L.Control.geocoder({ position: 'topright' }).addTo(map);
+  // L.control.locate({ position: 'topright' }).addTo(map);
+  // find location around the world
+  // L.Control.geocoder({ position: 'topright' }).addTo(map);
   L.control.toposcale({ scale_text:'Dpsmap Scale' }).addTo(map);
+
+  // L.control.locate().addTo(map);
+
 
   L.control.polylineMeasure({
     position: 'topleft',
@@ -114,19 +141,19 @@
     showUnitControl: true
   }).addTo(map);
 
-  map.pm.addControls({
-    position: 'topleft',
-    drawMarker: true,
-    drawPolygon: true,
-    drawPolyline: true,
-    drawCircle: true,
-    drawCircleMarker: true,
-    drawRectangle: true,
-    editMode: true,
-    dragMode: true,
-    cutPolygon: true,
-    removalMode: true
-  });
+  // map.pm.addControls({
+  //   position: 'topleft',
+  //   drawMarker: true,
+  //   drawPolygon: true,
+  //   drawPolyline: true,
+  //   drawCircle: true,
+  //   drawCircleMarker: true,
+  //   drawRectangle: true,
+  //   editMode: true,
+  //   dragMode: true,
+  //   cutPolygon: true,
+  //   removalMode: true
+  // });
 
   function onLocationFound(e) {
     var radius = e.accuracy;
@@ -147,16 +174,14 @@
   }
   map.on('locationerror', onLocationError);
 
- 
   // Create a MarkerClusterGroup
   var clusterGroup = L.markerClusterGroup();
 
-  // fetch GeoJSON data and add to cluster group
-  fetch("Villages_Pathein_DT.geojson")
+  // 1. Pathein_DT_Bdry.geojson - Black/Blue
+  fetch("Pathein_DT_Bdry.geojson")
     .then(res => res.json())
     .then(data => {
-      // Create geoJSON layer with custom pointToLayer (circleMarker)
-      var geoJsonLayer = L.geoJSON(data, {
+      L.geoJSON(data,  {
         onEachFeature: function (feature, layer) {
           if (feature.properties) {
             let popupContent = "<strong>Properties</strong><br><table>";
@@ -173,13 +198,13 @@
               color: "blue",
               fillColor: "lightblue",
               weight: 3,
-              opacity: 1.8,
-              fillOpacity: 0.4
+              opacity: 1.0,
+              fillOpacity: 0.5
             };
           }
           if (feature.geometry.type === "LineString") {
             return {
-              color: "green",
+              color: "blue",
               weight: 3,
               dashArray: "2, 6"
             };
@@ -188,20 +213,275 @@
         pointToLayer: function (feature, latlng) {
           return L.circleMarker(latlng, {
             radius: 6,
-            fillColor: "red",
+            fillColor: "blue",
             color: "#000",
             weight: 1,
             fillOpacity: 0.8
           });
         }
+      }).addTo(map);
+    });
+
+  // 2. mmr_rdsl_mimu_250k.geojson - Red
+  fetch("mmr_rdsl_mimu_250k.geojson")
+    .then(res => res.json())
+    .then(data => {
+      L.geoJSON(data,  {
+        onEachFeature: function (feature, layer) {
+          if (feature.properties) {
+            let popupContent = "<strong>Properties</strong><br><table>";
+            for (const key in feature.properties) {
+              popupContent += `<tr><td><b>${key}</b></td><td>${feature.properties[key]}</td></tr>`;
+            }
+            popupContent += "</table>";
+            layer.bindPopup(popupContent);
+          }
+        },
+        style: function (feature) {
+          if (feature.geometry.type === "MultiLineString" || feature.geometry.type === "LineString") {
+            return {
+              color: "red",
+              weight: 2
+            };
+          }
+        }
+      }).addTo(map);
+    });
+  
+  // 3. MIMU_Township_Bdry.geojson - Purple
+  fetch("MIMU_Township_Bdry.geojson")
+    .then(res => res.json())
+    .then(data => {
+      L.geoJSON(data,  {
+        onEachFeature: function (feature, layer) {
+          if (feature.properties) {
+            let popupContent = "<strong>Properties</strong><br><table>";
+            for (const key in feature.properties) {
+              popupContent += `<tr><td><b>${key}</b></td><td>${feature.properties[key]}</td></tr>`;
+            }
+            popupContent += "</table>";
+            layer.bindPopup(popupContent);
+          }
+        },
+        style: function (feature) {
+          if (feature.geometry.type === "MultiPolygon" || feature.geometry.type === "Polygon") {
+            return {
+              color: "purple",
+              // color: "blue",
+              fillColor: "lightblue",
+              weight: 1,
+              opacity: 0.4,
+              fillOpacity: 0.4
+            };
+          }
+        }
+      }).addTo(map);
+    });
+
+  // // 4. Villages_Pathein_DT.geojson - Clustered Red Points
+  // fetch("Villages_Pathein_DT.geojson")
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     var geoJsonLayer = L.geoJSON(data, {
+  //       onEachFeature: function (feature, layer) {
+  //         if (feature.properties) {
+  //           let popupContent = "<strong>Properties</strong><br><table>";
+  //           for (const key in feature.properties) {
+  //             popupContent += `<tr><td><b>${key}</b></td><td>${feature.properties[key]}</td></tr>`;
+  //           }
+  //           popupContent += "</table>";
+  //           layer.bindPopup(popupContent);
+  //         }
+  //       },
+  //       pointToLayer: function (feature, latlng) {
+  //         return L.circleMarker(latlng, {
+  //           radius: 6,
+  //           fillColor: "red",
+  //           color: "#FF8000",
+  //           weight: 1,
+  //           fillOpacity: 0.85
+  //         });
+  //       }
+  //     });
+  //     // Cluster the village points
+  //     clusterGroup.addLayer(geoJsonLayer);
+  //     map.addLayer(clusterGroup);
+
+  //     // 
+  //   // Search control ထည့်ပါ
+  //   var searchControl = new L.Control.Search({
+  //     layer: geoJsonLayer,
+  //     propertyName: 'VILLAGE', // ရွာနာမည်ပါတဲ့ property name
+  //     marker: false,
+  //     moveToLocation: function(latlng, title, map) {
+  //       map.setView(latlng, 14); // Zoom in
+  //     }
+  //   }
+  // );
+
+  //   searchControl.on('search:locationfound', function(e) {
+  //     e.layer.openPopup();
+  //   });
+
+  //   map.addControl(searchControl);
+  //   })
+  //   .catch(error => console.error("GeoJSON Load Failed:", error));
+  // 4. Villages_Pathein_DT.geojson - Clustered Red Points
+fetch("Villages_Pathein_DT.geojson")
+  .then(res => res.json())
+  .then(data => {
+    var geoJsonLayer = L.geoJSON(data, {
+      onEachFeature: function (feature, layer) {
+        if (feature.properties) {
+          let popupContent = "<strong>Properties</strong><br><table>";
+          for (const key in feature.properties) {
+            popupContent += `<tr><td><b>${key}</b></td><td>${feature.properties[key]}</td></tr>`;
+          }
+          popupContent += "</table>";
+          layer.bindPopup(popupContent);
+        }
+      },
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius: 6,
+          fillColor: "red",
+          color: "#FF8000",
+          weight: 1,
+          fillOpacity: 0.85
+        });
+      }
+    });
+
+    //  Cluster 
+    clusterGroup.addLayer(geoJsonLayer);
+    map.addLayer(clusterGroup);
+
+    //  Search 
+    var searchControl = new L.Control.Search({
+      layer: clusterGroup, 
+      propertyName: 'VILLAGE',
+      // marker: false,
+       marker: {
+    circle: {
+      radius: 10,
+      color: 'orange',
+      fillColor: 'yellow',
+      fillOpacity: 0.8,
+      weight: 2
+    }
+  },
+      textPlaceholder:"Find",
+      // marker.circle:L.CircleMarker options
+      // position:"topright",
+      // autoType:true,
+      // textPlaceholder:Find,
+      moveToLocation: function(latlng, title, map) {
+        map.setView(latlng, 14);
+      }
+    });
+
+    searchControl.on('search:locationfound', function(e) {
+      e.layer.openPopup();
+    });
+
+    map.addControl(searchControl);
+    //  Search 
+
+  })
+  .catch(error => console.error("GeoJSON Load Failed:", error));
+
+
+    // 5. MIMU TownShip Point
+    fetch("MIMU_Town_Point.geojson")
+    .then(res => res.json())
+    .then(data => {
+      var geoJsonLayer = L.geoJSON(data, {
+        onEachFeature: function (feature, layer) {
+          if (feature.properties) {
+            let popupContent = "<strong>Properties</strong><br><table>";
+            for (const key in feature.properties) {
+              popupContent += `<tr><td><b>${key}</b></td><td>${feature.properties[key]}</td></tr>`;
+            }
+            popupContent += "</table>";
+            layer.bindPopup(popupContent);
+          }
+        },
+        pointToLayer: function (feature, latlng) {
+          return L.circleMarker(latlng, {
+            radius: 6,
+            fillColor: "orange",
+            color: "#FF8000",
+            weight: 1,
+            fillOpacity: 1
+          });
+        }
       });
-      // Add the geoJSON layer to the cluster group (IMPORTANT)
+      // Cluster the village points
       clusterGroup.addLayer(geoJsonLayer);
-      // Add the cluster group to the map
       map.addLayer(clusterGroup);
     })
     .catch(error => console.error("GeoJSON Load Failed:", error));
 
+//     var searchLayer = L.geoJson().addTo(map);
+// //... adding data in searchLayer ...
+// L.map('map', { searchControl: {layer: searchLayer} });
+
+        L.control.Legend({
+  position: "bottomleft",
+  collapsed: false,
+  symbolWidth: 24,
+  opacity: 1,
+  column: 1,
+  // title:"Dps Legends"
+  legends: [
+    {
+      label: "Village Point",
+      type: "circle",
+      radius: 6,
+      color: "#FF8000",
+      fillColor: "red",
+      fillOpacity: 0.85,
+      weight: 1
+    },
+     {
+      label: "Township Point",
+      type: "circle",
+      radius: 6,
+      color: "#FF8000",
+      fillColor: "orange",
+      fillOpacity: 0.85,
+      weight: 1
+    },
+    {
+      label: "Township Boundary",
+      type: "polyline",
+      color: "purple",
+      weight: 1,
+      opacity: 0.4
+    },
+    {
+      label: "District Boundary",
+      type: "polyline",
+      color: "blue",
+      weight: 3
+    },
+    {
+      label: "Roads",
+      type: "polyline",
+      color: "red",
+      weight: 2
+    },
+    // {
+    //   label: "Dashed Line",
+    //   type: "polyline",
+    //   color: "blue",
+    //   dashArray: [2, 6],
+    //   weight: 2
+    // }
+  ]
+}).addTo(map);
+
+  
 </script>
 </body>
-</html> 
+</html>
