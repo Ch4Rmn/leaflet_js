@@ -4,6 +4,13 @@
   <title>Leaflet Map with Basemaps</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <!-- (less reliable but works for static sites):
+
+html
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
+
   
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -64,9 +71,13 @@
 
 <script>
       // right click
+        if (window.location.protocol === 'http:') {
+    window.location.href = 'https://' + window.location.host + window.location.pathname;
+      }
       document.addEventListener("contextmenu", function (event) {
         event.preventDefault(); // Prevent the default context menu from appearing
       });
+
   // Initialize map
   const map = L.map('map', {
     // searchControl: {layer: searchLayer}
