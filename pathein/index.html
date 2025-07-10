@@ -438,35 +438,35 @@ fetch("Villages_Pathein_DT.geojson")
       map.addLayer(clusterGroup);
 
       //  Search 
-    var searchControl = new L.Control.Search({
-      layer: clusterGroup, 
-      propertyName: 'Township',
-      // marker: false,
-       marker: {
-    circle: {
-      radius: 10,
-      color: 'red',
-      fillColor: 'yellow',
-      fillOpacity: 0.8,
-      weight: 2
-    }
-  },
-      // textPlaceholder:"Find villages in Pathein",
-      // marker.circle:L.CircleMarker options
-      // position:"topright",
-      // autoType:true,
-      // textPlaceholder:"Find",
-      moveToLocation: function(latlng, title, map) {
-        map.setView(latlng, 14);
-      }
-    });
+  //   var searchControl = new L.Control.Search({
+  //     layer: clusterGroup, 
+  //     propertyName: 'Township',
+  //     // marker: false,
+  //      marker: {
+  //   circle: {
+  //     radius: 10,
+  //     color: 'red',
+  //     fillColor: 'yellow',
+  //     fillOpacity: 0.8,
+  //     weight: 2
+  //   }
+  // },
+  //     // textPlaceholder:"Find villages in Pathein",
+  //     // marker.circle:L.CircleMarker options
+  //     // position:"topright",
+  //     // autoType:true,
+  //     // textPlaceholder:"Find",
+  //     moveToLocation: function(latlng, title, map) {
+  //       map.setView(latlng, 14);
+  //     }
+  //   });
 
-    searchControl.on('search:locationfound', function(e) {
-      e.layer.openPopup();
-    });
+  //   searchControl.on('search:locationfound', function(e) {
+  //     e.layer.openPopup();
+  //   });
 
-    map.addControl(searchControl);
-    //  Search 
+  //   map.addControl(searchControl);
+  //   //  Search 
 
     })
     .catch(error => console.error("GeoJSON Load Failed:", error));
