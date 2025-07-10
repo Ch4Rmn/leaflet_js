@@ -3,8 +3,7 @@
 <head>
   <title>Leaflet Map with Basemaps</title>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="https://dpsmap.com/assets/favicon/favicon-512x512.png" sizes="512x512" type="image/x-icon" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="shortcut icon" href="https://dpsmap.com/assets/favicon/favicon-512x512.png" sizes="512x512" type="image/x-icon" />
   <!-- (less reliable but works for static sites):
 
 html
@@ -258,8 +257,8 @@ html
         style: function (feature) {
           if (feature.geometry.type === "MultiLineString" || feature.geometry.type === "LineString") {
             return {
-              color: "red",
-              weight: 2
+              color: "gray",
+              weight: 1
             };
           }
         }
@@ -363,7 +362,7 @@ fetch("Villages_Pathein_DT.geojson")
         return L.circleMarker(latlng, {
           radius: 6,
           fillColor: "red",
-          color: "#FF8000",
+          color: "black",
           weight: 1,
           fillOpacity: 0.85
         });
@@ -388,11 +387,11 @@ fetch("Villages_Pathein_DT.geojson")
       weight: 2
     }
   },
-      textPlaceholder:"Find",
+      // textPlaceholder:"Find villages in Pathein",
       // marker.circle:L.CircleMarker options
       // position:"topright",
       // autoType:true,
-      // textPlaceholder:Find,
+      // textPlaceholder:"Find",
       moveToLocation: function(latlng, title, map) {
         map.setView(latlng, 14);
       }
@@ -409,7 +408,7 @@ fetch("Villages_Pathein_DT.geojson")
   .catch(error => console.error("GeoJSON Load Failed:", error));
 
 
-    // 5. MIMU TownShip Point
+    // 5. MIMU TownShip Point // Township
     fetch("MIMU_Town_Point.geojson")
     .then(res => res.json())
     .then(data => {
@@ -437,14 +436,46 @@ fetch("Villages_Pathein_DT.geojson")
       // Cluster the village points
       clusterGroup.addLayer(geoJsonLayer);
       map.addLayer(clusterGroup);
+
+      //  Search 
+    var searchControl = new L.Control.Search({
+      layer: clusterGroup, 
+      propertyName: 'Township',
+      // marker: false,
+       marker: {
+    circle: {
+      radius: 10,
+      color: 'red',
+      fillColor: 'yellow',
+      fillOpacity: 0.8,
+      weight: 2
+    }
+  },
+      // textPlaceholder:"Find villages in Pathein",
+      // marker.circle:L.CircleMarker options
+      // position:"topright",
+      // autoType:true,
+      // textPlaceholder:"Find",
+      moveToLocation: function(latlng, title, map) {
+        map.setView(latlng, 14);
+      }
+    });
+
+    searchControl.on('search:locationfound', function(e) {
+      e.layer.openPopup();
+    });
+
+    map.addControl(searchControl);
+    //  Search 
+
     })
     .catch(error => console.error("GeoJSON Load Failed:", error));
 
 //     var searchLayer = L.geoJson().addTo(map);
 // //... adding data in searchLayer ...
 // L.map('map', { searchControl: {layer: searchLayer} });
-
-        L.control.Legend({
+  
+   L.control.Legend({
   position: "bottomleft",
   collapsed: false,
   symbolWidth: 24,
@@ -456,7 +487,7 @@ fetch("Villages_Pathein_DT.geojson")
       label: "Village Point",
       type: "circle",
       radius: 6,
-      color: "#FF8000",
+      color: "black",
       fillColor: "red",
       fillOpacity: 0.85,
       weight: 1
@@ -501,26 +532,5 @@ fetch("Villages_Pathein_DT.geojson")
 
   
 </script>
- <!-- Start of StatCounter Code for Dreamweaver ကိုကြီးနှင့် ေအာင်သက်ပိုင် တို့ ၃၀.၁.၂၀၂၃ တွင် ထည့်သည် -->
-        <script type="text/javascript">
-        var sc_project=310175;
-        var sc_invisible=0;
-        var sc_security="df515d3d";
-        var scJsHost = (("https:" == document.location.protocol) ?
-        "https://secure." : "http://www.");
-        document.write("<sc"+"ript type='text/javascript' src='" +
-        scJsHost+
-        "statcounter.com/counter/counter.js'></"+"script>");
-        </script>
-        <noscript><div class="statcounter"><a title="web counter"
-        href="http://statcounter.com/" target="_blank"><img
-        class="statcounter"
-        src="//c.statcounter.com/310175/0/df515d3d/0/" alt="web
-        counter"></a></div></noscript>
-    </center>
-    <center>
-        <noscript></noscript>
-    </center>
-    <!-- End of StatCounter Code for Dreamweaver -->
 </body>
 </html>
