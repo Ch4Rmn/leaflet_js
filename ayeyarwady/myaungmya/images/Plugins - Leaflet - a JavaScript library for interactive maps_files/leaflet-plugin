@@ -1,0 +1,20 @@
+<svg width="68" height="20" viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="stars: 194">
+  <title>stars: 194</title>
+  <linearGradient id="nQqxk" x2="0" y2="100%">
+    <stop offset="0" stop-opacity=".1" stop-color="#EEE"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <mask id="dxyhu"><rect width="680" height="200" rx="30" fill="#FFF"/></mask>
+  <g mask="url(#dxyhu)">
+    <rect width="370" height="200" fill="#555"/>
+    <rect width="310" height="200" fill="#08C" x="370"/>
+    <rect width="680" height="200" fill="url(#nQqxk)"/>
+  </g>
+  <g aria-hidden="true" fill="#fff" text-anchor="start" font-family="Verdana,DejaVu Sans,sans-serif" font-size="110">
+    <text x="60" y="148" textLength="270" fill="#000" opacity="0.25">stars</text>
+    <text x="50" y="138" textLength="270">stars</text>
+    <text x="425" y="148" textLength="210" fill="#000" opacity="0.25">194</text>
+    <text x="415" y="138" textLength="210">194</text>
+  </g>
+  
+</svg>
