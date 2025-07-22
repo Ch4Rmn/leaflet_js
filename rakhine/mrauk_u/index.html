@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaflet Map with Basemaps</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="shortcut icon" href="https://dpsmap.com/assets/favicon/favicon-512x512.png" sizes="512x512" type="image/x-icon" />
+  <!-- (less reliable but works for static sites):
+
+html
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
+
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.browser.print/dist/leaflet.browser.print.min.css" />
+  <!-- Leaflet.markercluster CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+  <!-- Mini Map-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
+  <!-- Control.FullScreen -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.css" />
+  <!-- Geocoder -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <!-- PolylineMeasure -->
+  <link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" />
+  <!-- toposcale -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/KomelT/Leaflet.TopoScale/dist/leaflet.toposcale.min.css"/>
+  <!-- leaflet.pm -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" />
+  <!-- leaflet-legend -->
+   <link rel="stylesheet" href="src/leaflet-legend.css">
+<!-- leaflet-search -->
+   <link rel="stylesheet" href="src/leaflet-search.css">
+<!-- leaflet-locatecontrol -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.css" />
+
+   <link rel="stylesheet" href="src/Control.Coordinates.css">
+
+  <!-- <link href="https://cdn.jsdelivr.net/npm/leaflet-legend@1.0.2/leaflet-legend.min.css" rel="stylesheet"> -->
+<!-- <link rel="stylesheet" href="https://unpkg.com/leaflet-search@3.0.8/dist/leaflet-search.src.css" /> -->
+
+<style>
+    body{
+      margin: 0;
+      padding: 0;
+    }
+    #map { height: 100vh; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/KomelT/Leaflet.TopoScale/dist/leaflet.toposcale.min.js" charset="utf-8"></script>
+<script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
+<script src="https://unpkg.com/leaflet-geosearch@latest/dist/bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet.browser.print/dist/leaflet.browser.print.min.js"></script>
+<script src="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+<!-- <script src="https://unpkg.com/leaflet-search@3.0.8/dist/leaflet-search.min.js"></script> -->
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/leaflet-legend@1.0.2/leaflet-legend.min.js"></script> -->
+<script src="src/leaflet-legend.js"></script>
+<script src="src/leaflet-search.js" defer></script>
+<script src="src/Control.Coordinates.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+
+
+<script>
+      // right click
+      //  if (window.location.protocol === 'http:') {
+    //window.location.href = 'https://' + window.location.host + window.location.pathname;
+    //    }
+  // if (window.location.protocol === 'http:' && !window.location.host.includes('localhost')) {
+  //   window.location.href = window.location.href.replace('http:', 'https:');
+  // }
+      document.addEventListener("contextmenu", function (event) {
+        event.preventDefault(); // Prevent the default context menu from appearing
+      });
+
+  // Initialize map
+  // 95.12636750300004, 18.505117379000069
+  const map = L.map('map', {
+    // searchControl: {layer: searchLayer}
+    // 95.1643219, "Latitude": 18.07694054
+// 95.58984375, "Latitude": 16.8250103
+// 95.33039093, "Latitude": 17.60640907
+// 95.519768, "Latitude": 16.20245
+// Longitude": 94.88877869, "Latitude": 16.17658043
+// 92.521492004394503, "Latitude": 20.980979919433601
+// 93.321357727050795, "Latitude": 20.5654106140137
+    center: [20.5654106140137, 93.321357727050795],
+    gestureHandling: true,
+    zoomControl: true,
+    zoom: 11,
+    //  searchControl: {layer: searchLayer} 
+  });
+
+  const basemaps = {
+    "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }),
+    "Esri Streets": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '© Esri'
+    }),
+    "Esri Satellite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '© Esri, Maxar'
+    }),
+    "Carto Light": L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© CartoDB'
+    }),
+    "Carto Dark": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© CartoDB'
+    }),
+    "Google Streets": L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
+    }),
+    "Google Hybrid": L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
+    }),
+    "Google Satellite": L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
+    }),
+    "Google Terrain": L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
+    }),
+    "OpenTopoMap": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenTopoMap'
+    }),
+    "Hike & Bike": L.tileLayer('https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap, CC-BY-SA'
+    }),
+  };
+
+  // Default base layer
+  basemaps["OpenStreetMap"].addTo(map);
+
+  // Layer control
+  L.control.layers(basemaps).addTo(map);
+  L.control.fullscreen({ position: 'topleft' }).addTo(map);
+  L.control.browserPrint({ position: 'topright' }).addTo(map);
+  // L.control.locate({ position: 'topright' }).addTo(map);
+  // find location around the world
+  // L.Control.geocoder({ position: 'topright' }).addTo(map);
+  // dps scale
+  L.control.toposcale({ scale_text:'Dpsmap Scale' }).addTo(map);
+  // L.control.locate().addTo(map);
+
+  // new L.Control.Coordinates().addTo(map);
+
+  
+  // 
+  // var c = new L.Control.Coordinates();
+	// 	c.addTo(map);
+
+	// 	function onMapClick(e) {
+	// 		c.setCoordinates(e);
+	// 	}
+
+	// 	map.on('click', onMapClick);
+
+
+  L.control.polylineMeasure({
+    position: 'topleft',
+    unit: 'metres',
+    showBearings: true,
+    clearMeasurementsOnStop: false,
+    showClearControl: true,
+    showUnitControl: true
+  }).addTo(map);
+
+  // map.pm.addControls({
+  //   position: 'topleft',
+  //   drawMarker: true,
+  //   drawPolygon: true,
+  //   drawPolyline: true,
+  //   drawCircle: true,
+  //   drawCircleMarker: true,
+  //   drawRectangle: true,
+  //   editMode: true,
+  //   dragMode: true,
+  //   cutPolygon: true,
+  //   removalMode: true
+  // });
+
+  function onLocationFound(e) {
+    var radius = e.accuracy;
+    var lat = e.latlng.lat.toFixed(6);
+    var lng = e.latlng.lng.toFixed(6);
+    L.marker(e.latlng).addTo(map)
+      .bindPopup(
+        "You are within " + radius + " meters from this point<br>" +
+        "<b>Latitude:</b> " + lat + "<br>" +
+        "<b>Longitude:</b> " + lng
+      ).openPopup();
+    L.circle(e.latlng, radius).addTo(map);
+  }
+  map.on('locationfound', onLocationFound);
+
+  function onLocationError(e) {
+    alert(e.message);
+  }
+  map.on('locationerror', onLocationError);
+
+  // Create a MarkerClusterGroup
+  var clusterGroup = L.markerClusterGroup();
+
+  // Maungdaw_District_Bdry_2025.geojson 
+  fetch("Mrauk_U_District_Bdry_2025.geojson")
+    .then(res => res.json())
+    .then(data => {
+      L.geoJSON(data,  {
+        onEachFeature: function (feature, layer) {
+          if (feature.properties) {
+            let popupContent = "<strong>Properties</strong><br><table>";
+            for (const key in feature.properties) {
+              popupContent += `<tr><td><b>${key}</b></td><td>${feature.properties[key]}</td></tr>`;
+            }
+            popupContent += "</table>";
+            layer.bindPopup(popupContent);
+          }
+        },
+        style: function (feature) {
+          if (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon") {
+            return {
+              color: "blue",
+              fillColor: "lightblue",
+              weight: 3,
+              opacity: 1.0,
+              fillOpacity: 0.5
+            };
+          }
+          if (feature.geometry.type === "LineString") {
+            return {
+              color: "blue",
+              weight: 3,
+              dashArray: "2, 6"
+            };
+          }
+        },
+        pointToLayer: function (feature, latlng) {
+          return L.circleMarker(latlng, {
+            radius: 6,
+            fillColor: "blue",
+            color: "#000",
+            weight: 1,
+            fillOpacity: 0.8
+          });
+        }
+      }).addTo(map);
+    });
+
+  
+// Mrauk_U_District_Village.geojson
+fetch("Mrauk_U_District_Village.geojson")
+  .then(res => res.json())
+  .then(data => {
+    var multiPointLayer = L.layerGroup();
+
+    data.features.forEach(feature => {
+      const props = feature.properties;
+
+      if (feature.geometry.type === "MultiPoint") {
+        feature.geometry.coordinates.forEach(coord => {
+          const latlng = L.latLng(coord[1], coord[0]);
+
+          const marker = L.circleMarker(latlng, {
+            radius: 6,
+            fillColor: "red",
+            color: "black",
+            weight: 1,
+            fillOpacity: 0.85
+          });
+
+          // Popup
+          if (props) {
+            let popupContent = "<strong>Properties</strong><br><table>";
+            for (const key in props) {
+              popupContent += `<tr><td><b>${key}</b></td><td>${props[key]}</td></tr>`;
+            }
+            popupContent += "</table>";
+            marker.bindPopup(popupContent);
+
+            // Attach searchable property to marker
+            if (props.VILLAGE) {
+              marker.options.VILLAGE = props.VILLAGE;
+            }
+          }
+
+          multiPointLayer.addLayer(marker);
+        });
+      }
+    });
+
+    // Cluster
+    clusterGroup.addLayer(multiPointLayer);
+    map.addLayer(clusterGroup);
+
+    // Search
+    var searchControl = new L.Control.Search({
+      layer: clusterGroup,
+      propertyName: 'VILLAGE',
+      marker: {
+        circle: {
+          radius: 10,
+          color: 'orange',
+          fillColor: 'yellow',
+          fillOpacity: 0.8,
+          weight: 2
+        }
+      },
+      moveToLocation: function(latlng, title, map) {
+        map.setView(latlng, 14);
+      }
+    });
+
+    searchControl.on('search:locationfound', function(e) {
+      e.layer.openPopup();
+    });
+
+    map.addControl(searchControl);
+  })
+  .catch(error => console.error("GeoJSON Load Failed:", error));
+
+
+  // legend
+   L.control.Legend({
+  position: "bottomleft",
+  collapsed: false,
+  symbolWidth: 24,
+  opacity: 1,
+  column: 1,
+  // title:"Dps Legends"
+  legends: [
+    {
+      label: "Village Point",
+      type: "circle",
+      radius: 6,
+      color: "black",
+      fillColor: "red",
+      fillOpacity: 0.85,
+      weight: 1
+    },
+    //  {
+    //   label: "Town Point",
+    //   type: "circle",
+    //   radius: 6,
+    //   color: "gray",
+    //   fillColor: "black",
+    //   fillOpacity: 0.85,
+    //   weight: 1
+    // },
+    // {
+    //   label: "Township Boundary",
+    //   type: "polyline",
+    //   color: "purple",
+    //   weight: 1,
+    //   opacity: 1
+    // },
+    {
+      label: "District Boundary",
+      type: "polyline",
+      color: "blue",
+      weight: 3
+    },
+    // {
+    //   label: "Roads",
+    //   type: "polyline",
+    //   color: "gray",
+    //   weight: 2
+    // },
+    // {
+    //   label: "Dashed Line",
+    //   type: "polyline",
+    //   color: "blue",
+    //   dashArray: [2, 6],
+    //   weight: 2
+    // }
+  ]
+}).addTo(map);
+
+  
+</script>
+</body>
+</html>

@@ -348,10 +348,15 @@ html
 // var clusterGroup = L.markerClusterGroup();
 // var searchGroupLayer = L.layerGroup(); 
 
+// 3 + 4 start 
 fetch("Villages_Pathein_DT.geojson")
   .then(res => res.json())
   .then(data => {
-    var geoJsonLayer = L.geoJSON(data, {
+    var geoJsonLayer = L.geoJSON(data, 
+      //   style: function(feature) {
+      //   return { color: '#666', weight: 1, fillColor: '#ccc', fillOpacity: 0.7 };
+      // },
+      {
       onEachFeature: function (feature, layer) {
         if (feature.properties) {
           let popupContent = "<strong>Properties</strong><br><table>";
@@ -474,7 +479,7 @@ fetch("Villages_Pathein_DT.geojson")
 
     })
     .catch(error => console.error("GeoJSON Load Failed:", error));
-
+// 3 + 4 end
 //     var searchLayer = L.geoJson().addTo(map);
 // //... adding data in searchLayer ...
 // L.map('map', { searchControl: {layer: searchLayer} });
@@ -525,9 +530,11 @@ fetch("Villages_Pathein_DT.geojson")
       weight: 2
     },
     // {
-    //   label: "Dashed Line",
-    //   type: "polyline",
-    //   color: "blue",
+    //   label: "when u zoom out,village point wil sum ",
+    //    type: "circle",
+    //   radius: 6,
+    //   color: "yellow",
+    //   fillColor: "yellow",
     //   dashArray: [2, 6],
     //   weight: 2
     // }
