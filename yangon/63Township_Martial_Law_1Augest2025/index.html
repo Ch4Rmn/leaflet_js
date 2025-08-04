@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Myaungmya District(မြောင်းမြခရိုင်)</title>
+  <title>63Township_Martial_Law_1Augest2025</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="shortcut icon" href="https://dpsmap.com/assets/favicon/favicon-512x512.png" sizes="512x512" type="image/x-icon" />
   <!-- (less reliable but works for static sites):
@@ -51,7 +51,7 @@ html
     position: absolute;
     padding: 6px;
     background-color: #f7f7f7;
-    border: 1px solid #fff;
+    border: 1px solid #ffffff;
     border-radius: 1px;
     color: #222;
     /* text-shadow: 0.3px 0.2px rgb(0, 0, 0); */
@@ -71,9 +71,26 @@ html
   font-weight: bold;
   font-size: 14px;
 } */
+ #header {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 8px 20px;
+  font-size: 20px;
+  font-weight: bold;
+  /* border-radius: 10px; */
+  z-index: 1000;
+  box-shadow: 1px 2px 6px rgba(0,0,0,0.2);
+}
+
   </style>
 </head>
 <body>
+  
+  <!-- <div id="header">DPSMAP - 63Township</div> -->
+
 <div id="map"></div>
 
 <!-- Leaflet JS -->
