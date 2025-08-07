@@ -107,6 +107,7 @@ html
 
 <!-- <script src="https://cdn.jsdelivr.net/npm/leaflet-legend@1.0.2/leaflet-legend.min.js"></script> -->
 <script src="src/leaflet.legend.js"></script>
+<script src="src/leaflet-hash.js"></script>
 <script src="src/leaflet-search.js" defer></script>
 <script src="src/Control.Coordinates.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.js" charset="utf-8"></script>
@@ -138,6 +139,8 @@ html
     zoom: 8,
     //  searchControl: {layer: searchLayer} 
   });
+
+  var hash = new L.Hash(map);
 
   const basemaps = {
     "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
