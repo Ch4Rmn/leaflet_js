@@ -1,0 +1,20 @@
+<svg width="173" height="20" viewBox="0 0 1730 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="last commit: over 1 year ago">
+  <title>last commit: over 1 year ago</title>
+  <linearGradient id="NelDV" x2="0" y2="100%">
+    <stop offset="0" stop-opacity=".1" stop-color="#EEE"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <mask id="STckE"><rect width="1730" height="200" rx="30" fill="#FFF"/></mask>
+  <g mask="url(#STckE)">
+    <rect width="752" height="200" fill="#555"/>
+    <rect width="978" height="200" fill="#3C1" x="752"/>
+    <rect width="1730" height="200" fill="url(#NelDV)"/>
+  </g>
+  <g aria-hidden="true" fill="#fff" text-anchor="start" font-family="Verdana,DejaVu Sans,sans-serif" font-size="110">
+    <text x="60" y="148" textLength="652" fill="#000" opacity="0.25">last commit</text>
+    <text x="50" y="138" textLength="652">last commit</text>
+    <text x="807" y="148" textLength="878" fill="#000" opacity="0.25">over 1 year ago</text>
+    <text x="797" y="138" textLength="878">over 1 year ago</text>
+  </g>
+  
+</svg>

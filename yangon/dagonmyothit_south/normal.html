@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaflet Map with Basemaps</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.browser.print/dist/leaflet.browser.print.min.css" />
+  <!-- Leaflet.markercluster CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+  <!-- leaflet geosearch -->
+<!-- <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css"
+/> -->
+
+
+<!--  Mini Map-->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
+<script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
+
+<!-- Control.FullScreen -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.css" />
+
+<!-- Geocoder -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+<!-- PolylineMeasure -->
+<link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" />
+<!-- toposcale -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/KomelT/Leaflet.TopoScale/dist/leaflet.toposcale.min.css"
+/>
+
+<!-- leaflet.pm -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" />
+
+<!-- Leaflet.markercluster JS -->
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+
+
+
+
+  <style>
+    #map {
+         height: 100vh; 
+        }
+  </style>
+</head>
+<body>
+
+<!-- <h3>မြေပုံ (Leaflet.js) + Basemaps + Marker</h3> -->
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/gh/KomelT/Leaflet.TopoScale/dist/leaflet.toposcale.min.js"
+  charset="utf-8"
+></script>
+
+<script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
+<script src="https://unpkg.com/leaflet-geosearch@latest/dist/bundle.min.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/gh/KomelT/Leaflet.TopoScale/dist/leaflet.toposcale.min.js"
+  charset="utf-8"
+></script>
+
+
+<script src="https://unpkg.com/leaflet.browser.print/dist/leaflet.browser.print.min.js"></script>
+<script src="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+<script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
+
+<!--  -->
+<!-- Google Mutant Plugin -->
+<!-- <script src="https://unpkg.com/leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant.js"></script> -->
+
+<!-- Google Maps JS API -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key="></script> -->
+
+
+
+
+<script>
+  // Initialize map
+  const map = L.map('map', {
+    center: [16.87464905, 94.60865],
+    // Lat: 17.04093, Lng: 94.60865
+    // 94.9620285, "Latitude": 16.87464905  
+    // 16.7754° N, 94.7381° E
+    zoom: 11
+  });
+
+  const basemaps = {
+    "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }),
+    "Esri Satellite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '© Esri, Maxar'
+    }),
+    "Carto Light": L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© CartoDB'
+    }),
+    "Carto Dark": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© CartoDB'
+    }),
+    "Stamen Toner": L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
+      attribution: '© Stamen'
+    }),
+    "Stamen Terrain": L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {
+      attribution: '© Stamen'
+    }),
+    "Stamen Watercolor": L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg', {
+      attribution: '© Stamen'
+    }),
+    "Esri Streets": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '© Esri'
+    }),
+    "OpenTopoMap": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenTopoMap'
+    }),
+    "Hike & Bike": L.tileLayer('https://tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap, CC-BY-SA'
+    }),
+    "Google Streets": L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
+    }),
+    "Google Hybrid": L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
+    }),
+    "Google Satellite": L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
+    }),
+    "Google Terrain": L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0','mt1','mt2','mt3'],
+      attribution: '© Google'
+    }),
+    //    "GoogleRoad" : L.gridLayer.googleMutant({ type: 'roadmap' }),
+    //   "GoogleSat" : L.gridLayer.googleMutant({ type: 'satellite' }),
+    // "GoogleTerrain" : L.gridLayer.googleMutant({ type: 'terrain' }),
+    //   "GoogleHybrid" : L.gridLayer.googleMutant({ type: 'hybrid' });
+  };
+
+  // Default base layer
+  basemaps["OpenStreetMap"].addTo(map);
+
+  // google map 
+// const googleLayers = {
+//   "Google Road (Mutant)": googleRoad,
+//   "Google Satellite (Mutant)": googleSat,
+//   "Google Terrain (Mutant)": googleTerrain,
+//   "Google Hybrid (Mutant)": googleHybrid
+// };
+
+// ✅ Combine into control
+// L.control.layers({ ...basemaps, ...googleLayers }).addTo(map);
+  // google map 
+
+  // Layer control
+  L.control.layers(basemaps).addTo(map);
+  //add fullscreen control
+  L.control.fullscreen({ position: 'topleft' }).addTo(map);
+  // Add Print Control
+  L.control.browserPrint({ position: 'topright' }).addTo(map);
+
+  L.Control.geocoder({ position: 'topright' }).addTo(map);
+
+  L.control.toposcale({ 
+    scale_text:'Dpsmap Scale'
+  }).addTo(map);
+
+  
+
+  
+
+
+//   const search = new GeoSearch.GeoSearchControl({
+//   provider: new GeoSearch.OpenStreetMapProvider({
+//     params: {
+//       country: 'MM' // Myanmar
+//     }
+//   }),
+  
+// });
+
+// map.addControl(search);
+
+L.control.polylineMeasure({
+  position: 'topleft',
+  unit: 'metres', // or 'landmiles', 'nauticalmiles'
+  showBearings: true,
+  clearMeasurementsOnStop: false,
+  showClearControl: true,
+  showUnitControl: true
+}).addTo(map);  // L.control.toposcale({ position: 'bottotoprightmleft' }).addTo(map);
+
+
+// new GeoSearch.GeoSearchControl({
+//   provider: new GeoSearch.OpenStreetMapProvider(),
+// });
+
+// const searchControl = new GeoSearch.GeoSearchControl({
+//   provider: new GeoSearch.OpenStreetMapProvider(),
+//   style: 'bar', // or 'button'
+// });
+// map.addControl(searchControl);
+
+
+  // After initializing your map and before or after other controls:
+// map.addControl(new L.Control.Fullscreen());
+
+  // Add Marker
+  // const marker = L.marker([16.8, 96.15],
+  
+  // { pmIgnore: true,draggable: true }).addTo(map)
+  //   .bindPopup("<b>ရန်ကုန်</b><br>မြန်မာ").openPopup();
+
+//   const marker = L.marker([16.8, 96.15], { pmIgnore: true, draggable: true })
+//   .addTo(map)
+//   .bindPopup("<b>ရန်ကုန်</b><br>မြန်မာ")
+//   .openPopup();
+// marker.on('drag', function(e) {
+//   var lat = e.target.getLatLng().lat;
+//   var lng = e.target.getLatLng().lng;
+//   marker.setPopupContent(`<b>ရန်ကုန်</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`);
+// });
+
+    // 
+// marker.on('drag', function(e) {
+//   // Get the current latitude and longitude of the marker
+//   var lat = e.target.getLatLng().lat;
+//   var lng = e.target.getLatLng().lng;
+//   // Update the coordinates display
+//   document.getElementById('coords').innerHTML = `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`;
+// });
+
+
+    map.pm.addControls({
+  position: 'topleft', // button bar ကို ဘယ်ဘက်ထိပ်မှာထားမယ်
+  drawMarker: true,
+  drawPolygon: true,
+  drawPolyline: true,
+  drawCircle: true,
+  drawCircleMarker: true,
+  drawRectangle: true,
+  editMode: true,
+  dragMode: true,
+  cutPolygon: true,
+  removalMode: true
+});
+
+// user location 
+// map.locate({setView: true, maxZoom: 16});
+
+// if found user location
+// function onLocationFound(e) {
+//     var radius = e.accuracy;
+
+//     L.marker(e.latlng).addTo(map)
+//         .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+//     L.circle(e.latlng, radius).addTo(map);
+// }
+
+function onLocationFound(e) {
+    var radius = e.accuracy;
+    var lat = e.latlng.lat.toFixed(6);
+    var lng = e.latlng.lng.toFixed(6);
+
+    L.marker(e.latlng).addTo(map)
+        .bindPopup(
+          "You are within " + radius + " meters from this point<br>" +
+          "<b>Latitude:</b> " + lat + "<br>" +
+          "<b>Longitude:</b> " + lng
+        ).openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+}
+map.on('locationfound', onLocationFound);
+
+// user location error
+function onLocationError(e) {
+    alert(e.message);
+}
+
+map.on('locationerror', onLocationError);
+
+// fetch GeoJSON data and add to map
+  fetch("Villages_Pathein_DT.geojson")
+  .then(res => res.json())
+  .then(data => {
+    L.geoJSON(data, {
+      // onEachFeature: function (feature, layer) {
+      //   if (feature.properties) {
+      //     const props = feature.properties;
+      //     layer.bindPopup(
+      //       `<strong>${props.Township}</strong><br>
+      //        Region: ${props.Region}<br>
+      //        District: ${props.District}<br>
+      //        City: ${props.City}<br>
+      //        Group: ${props.TSGroup}<br>
+      //        Population (2025): ${props.Pop_2025.toLocaleString()}<br>
+      //        Area (sqkm): ${props.Area_sqkm}`
+      //     );
+      //   }
+      // },
+      onEachFeature: function (feature, layer) {
+  if (feature.properties) {
+    let popupContent = "<strong>Properties</strong><br><table>";
+    for (const key in feature.properties) {
+      popupContent += `<tr><td><b>${key}</b></td><td>${feature.properties[key]}</td></tr>`;
+    }
+    popupContent += "</table>";
+    layer.bindPopup(popupContent);    
+    // layer.openPopup(); // <-- This will open the popup automatically
+
+  }
+},
+      style: function (feature) {
+        if (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon") {
+          // return { color: "blue", fillColor: "lightblue", weight: 3 };
+        // }
+         return {
+      color: "blue",
+      fillColor: "lightblue",
+      weight: 3,
+      opacity: 1.8,
+      fillOpacity: 0.4,
+      // dashArray: "5, 5",
+      // lineCap: "round",
+      // lineJoin: "round"
+    };
+  }
+        if (feature.geometry.type === "LineString") {
+          // return { color: "green", weight: 3 };
+            return {
+      color: "green",
+      weight: 3,
+      dashArray: "2, 6"
+    };
+        }
+      },
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius: 6,
+          fillColor: "red",
+          color: "#000",
+          weight: 1,
+          fillOpacity: 0.8
+        });
+      }
+    }).addTo(map);
+  })
+  .catch(error => console.error("GeoJSON Load Failed:", error));
+
+  // map.setView([baseGeoJson.geometry.coordinates[1], baseGeoJson.geometry.coordinates[0]], 13);
+
+
+    // 
+
+  //   fetch("myanmar.geojson")
+  // .then(res => res.json())
+  // .then(data => {
+  //   const clusterGroup = L.markerClusterGroup(); // Cluster group
+
+  //   const geoLayer = L.geoJSON(data, {
+  //     pointToLayer: function (feature, latlng) {
+  //       return L.marker(latlng); // တစ်ခုချင်း marker
+  //     },
+  //     onEachFeature: function (feature, layer) {
+  //       if (feature.properties && feature.properties.name) {
+  //         layer.bindPopup("Name: " + feature.properties.name);
+  //         layer.bindTooltip(feature.properties.name); // Tooltip
+  //       }
+
+  //       // Zoom-to-feature on click
+  //       layer.on('click', function () {
+  //         map.fitBounds(layer.getBounds ? layer.getBounds() : layer.getLatLng().toBounds(1000));
+  //       });
+  //     }
+  //   });
+
+  //   clusterGroup.addLayer(geoLayer); // GeoJSON တွေကို cluster ထဲထည့်
+  //   map.addLayer(clusterGroup);      // Cluster ကို map မှာထည့်
+
+</script>
+
+</body>
+</html>
